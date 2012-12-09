@@ -8,6 +8,35 @@ using namespace std;
 /****************List of errors: ****************
     Error 1 is an error in the function upadateN
     */
+    
+    
+double fcoop(double x, double b, double c, double s){
+	double y;
+	
+	y=1.+s*((b-c)*x-c*(1-x));
+	return y;
+}
+
+double fdef(double x, double b, double s){
+	double y;
+	
+	y=1.+s*b*x;
+	return y;
+}
+
+double g(double x, double p){
+	double y;
+	
+	y=1+p*x;
+	return y;
+}
+
+double d(double Nc, double Nd, double K){
+	double y;
+	
+	y=(Nc+Nd)/K;
+	return y;
+}    
 
 void initializeGamma(double **G, double *Gamma,int M, double *Nc, double *Nd, double *x, double p, double s, double K,double b, double c){
     int i=0,j;
@@ -179,30 +208,4 @@ double randlog(double Gamma, gsl_rng *r){ //Generate the random number according
     return x;
 }
 
-double fcoop(double x, double b, double c, double s){
-	double y;
-	
-	y=1.+s*((b-c)*x-c*(1-x));
-	return y;
-}
 
-double fdef(double x, double b, double s){
-	double y;
-	
-	y=1.+s*b*x;
-	return y;
-}
-
-double g(double x, double p){
-	double y;
-	
-	y=1+p*x;
-	return y;
-}
-
-double d(double Nc, double Nd, double K){
-	double y;
-	
-	y=(Nc+Nd)/K;
-	return y;
-}

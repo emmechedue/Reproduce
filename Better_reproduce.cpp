@@ -11,8 +11,8 @@ using namespace std;
 //**********Initializations**********
 const int N0=4; //Initial number of bacteria in each cell
 const int Nc0=2;//Initial number of cooperators in each cell
-const int T=5000000; //Simulations steps
-const int M=1000; //Number of cells
+const int T=500; //Simulations steps
+const int M=100; //Number of cells
 const double b=3.;
 const double c=1;
 const double s=0.05; //Selection's strenght

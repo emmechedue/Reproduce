@@ -3,5 +3,7 @@ compile: Better_reproduce.cpp ./Headers/headers1.h
 		
 clean: 
 	rm *~
+	rm ./Headers/*~
 	rm fast.txt
 	rm output.txt
+	

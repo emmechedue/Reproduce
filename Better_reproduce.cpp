@@ -11,13 +11,14 @@ using namespace std;
 //**********Initializations**********
 const int N0=4; //Initial number of bacteria in each cell
 const int Nc0=2;//Initial number of cooperators in each cell
-const int T=500; //Simulations steps
-const int M=100; //Number of cells
+const double T=1000.; //Time when the simulation stops
+const double interval=0.05; //Time step for which I print my results in fast
+const int M=1; //Number of cells
 const double b=3.;
 const double c=1;
 const double s=0.05; //Selection's strenght
 const double p=10.; //Cooperators advantage
-const double K=100.; //Carrying capacity
+const double K=20.; //Carrying capacity
 
 //Note that in this program the w_s is set to 1!!!
 
@@ -25,7 +26,7 @@ const double K=100.; //Carrying capacity
 
 int main(){
     double Nc[M], Nd[M], x[M]; //Coop. #, Def. # and fraction of coop. ****In form of N[cell]
-    double t; //time
+    double t ,oldt; //t is the time and oldt will be used to check whether or not print
     int i,l,m,emme=4*M;
     double Gamma[emme]; //The array with all the partial sums
     double **G; //Matrix with all the gammas for all the cells in form of G[cell][reaction]
@@ -33,12 +34,14 @@ int main(){
     ofstream file,file_fast;//Output file and a file where I'm not going to print everything
     const char filename[]="output.txt";
     const char fname[]="fast.txt";
+    bool truefalse;
     unsigned int seed; //Seed of the random number generator
 	gsl_rng *r; //Pointer to the type of rng
 	FILE *pfile; //file to read from /usr/urandom
     
     //*********Let's initialize all**********
     t=0.;
+    oldt=0.;
     for(i=0; i<M; i++){ //Initialize the matrices
         Nc[i]=Nc0;
         Nd[i]=N0-Nc0;
@@ -71,8 +74,10 @@ int main(){
     
     //*****Start of the evolution***********
      
-    for(i=1;i<T;i++){ 
-        t=t+randlog(Gamma[emme-1],r); //Samples the time at wich the next reaction happens;
+   do{ 
+        rand=randlog(Gamma[emme-1],r);//Samples the time at wich the next reaction happens;
+        t=t+rand; //Update the time
+        oldt=oldt+rand; //Update oldt
         rand=gsl_rng_uniform(r)*Gamma[emme-1]; //Generates the random number to choose the reaction!
         //cout<<"check 1"<<endl;
         //cout<<"check 2"<<endl;
@@ -84,15 +89,12 @@ int main(){
         //cout<<"check 5"<<endl;
         myprint2(Nc,Nd,t,M,file); //Prints N average and x average at time t
         //cout<<"check 6"<<endl;
-        if((i%10)==0){
-            cout<<"i is "<<i<<endl; //Just a check
-            myprint2(Nc,Nd,t,M,file_fast); //Printing the results on file fast. To create a picture
-        } 
-        /*if((i%100)==0){ //Otherwise the file is really too messy!
-            cout<<"i is "<<i<<endl; //Just a check
-            myprint2(Nc,Nd,t,M,file_fast); //Printing the results on file fast. To create a picture
-            }*/
-    }
+        if(oldt>=interval){ //Checks whether I have to print or not
+        	myprint2(Nc,Nd,t,M,file_fast); //Printing the results on file fast. To create a picture
+        	oldt=oldt -interval; //Subract by oldt the value of interval to start counting again
+        	cout<<"The time is "<<t<<endl; //Just to check
+        }
+    }while(t<=T);
     
     file.close(); //Closing the files of output!
     file_fast.close();

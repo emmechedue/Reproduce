@@ -11,14 +11,14 @@ using namespace std;
 //**********Initializations**********
 const int N0=4; //Initial number of bacteria in each cell
 const int Nc0=2;//Initial number of cooperators in each cell
-const double T=1000.; //Time when the simulation stops
+const double T=45.; //Time when the simulation stops
 const double interval=0.05; //Time step for which I print my results in fast
-const int M=1; //Number of cells
+const int M=100; //Number of cells
 const double b=3.;
 const double c=1;
 const double s=0.05; //Selection's strenght
 const double p=10.; //Cooperators advantage
-const double K=20.; //Carrying capacity
+const double K=100.; //Carrying capacity
 
 //Note that in this program the w_s is set to 1!!!
 
@@ -34,7 +34,6 @@ int main(){
     ofstream file,file_fast;//Output file and a file where I'm not going to print everything
     const char filename[]="output.txt";
     const char fname[]="fast.txt";
-    bool truefalse;
     unsigned int seed; //Seed of the random number generator
 	gsl_rng *r; //Pointer to the type of rng
 	FILE *pfile; //file to read from /usr/urandom
@@ -60,6 +59,7 @@ int main(){
 	fclose(pfile);
 	r = gsl_rng_alloc(gsl_rng_mt19937); //I'm using the "Mersenne Twister" generator!
 	gsl_rng_set(r,seed); // Starting the generator
+	//**********************************
     
     file.open(filename,ios::out|ios::trunc); //Open the output's file and print the results for time=0
     file<<"#Results for the simulation reproducing the old results with"<<endl;
@@ -75,9 +75,12 @@ int main(){
     //*****Start of the evolution***********
      
    do{ 
+        //cout<<endl<<endl<<"Gamma[emme-1] is"<<Gamma[emme-1]<<endl<<endl;
         rand=randlog(Gamma[emme-1],r);//Samples the time at wich the next reaction happens;
+        //cout<<endl<<"rand= "<<rand<<endl;
         t=t+rand; //Update the time
         oldt=oldt+rand; //Update oldt
+        //cout<<endl<<"oldt= "<<oldt<<endl;
         rand=gsl_rng_uniform(r)*Gamma[emme-1]; //Generates the random number to choose the reaction!
         //cout<<"check 1"<<endl;
         //cout<<"check 2"<<endl;

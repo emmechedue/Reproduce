@@ -54,6 +54,7 @@ void initializeGamma(double **G, double *Gamma,int M, double *Nc, double *Nd, do
     G[0][3]=Nd[i]*d(Nc[i],Nd[i],K); 
     Gamma[j]=Gamma[j-1]+G[0][3];
     j++;
+    //cout<<"The gammas are: "<<G[0][0]<<"  "<<G[0][1]<<"  "<<G[0][2]<<"  "<<G[0][3]<<"and gamma j is "<<Gamma[j-1]<<endl;
     for(i=1; i<M;i++){ //Create the Gammas; the order is G_(0->C), G_(c->0), G_(0->D), G_(D->0) and start back for the new cell
        G[i][0]=Nc[i]*g(x[i],p)*fcoop(x[i],b,c,s);
        Gamma[j]=Gamma[j-1]+G[i][0];
@@ -67,6 +68,7 @@ void initializeGamma(double **G, double *Gamma,int M, double *Nc, double *Nd, do
        G[i][3]=Nd[i]*d(Nc[i],Nd[i],K);
        Gamma[j]=Gamma[j-1]+G[i][3];
        j++; 
+       //cout<<"check to see if the foris doing something!!!!!!!!!";
     }//Here I also computed the overall Gamma
     return;
 }
@@ -175,10 +177,10 @@ void updateG(double **G,double *Gamma, int m, double *Nc, double *Nd, double *x,
     for( i=0; i<4;i++){ //Save the changes of G[][]
         old[i]=G[m][i];
     }
-    G[m][0]=Nc[i]*g(x[i],p)*fcoop(x[i],b,c,s); //Updates the G[][]
-    G[m][1]=Nc[i]*d(Nc[i],Nd[i],K); 
-    G[m][2]=g(x[i],p)*Nd[i]*fdef(x[i],b,s);
-    G[m][3]=Nd[i]*d(Nc[i],Nd[i],K);
+    G[m][0]=Nc[m]*g(x[m],p)*fcoop(x[m],b,c,s); //Updates the G[][]
+    G[m][1]=Nc[m]*d(Nc[m],Nd[m],K); 
+    G[m][2]=g(x[m],p)*Nd[m]*fdef(x[m],b,s);
+    G[m][3]=Nd[m]*d(Nc[m],Nd[m],K);
     sum=0;
     for(i=0;i<4;i++){ //Compute the change
         sum=sum+G[m][i]-old[i];
@@ -197,6 +199,7 @@ void updateG(double **G,double *Gamma, int m, double *Nc, double *Nd, double *x,
     for(i=a+4;i<emme;i++){ //I think this way is better because I have to make less calls (instead of Nd, Nc, x I just call sum)
         Gamma[i]=Gamma[i]+sum;
     }
+    //cout<<"The gammas are: "<<G[0][0]<<"  "<<G[0][1]<<"  "<<G[0][2]<<"  "<<G[0][3]<<"and gamma j is "<<Gamma[emme-1]<<endl;
     return;
 }
 

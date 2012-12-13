@@ -12,7 +12,7 @@ using namespace std;
 const int N0=4; //Initial number of bacteria in each cell
 const int Nc0=2;//Initial number of cooperators in each cell
 const double T=45.; //Time when the simulation stops
-const double interval=0.05; //Time step for which I print my results in fast
+const double interval=0.001; //Time step for which I print my results in fast
 const int M=2000; //Number of cells
 const double b=3.;
 const double c=1;
@@ -90,7 +90,7 @@ int main(){
         //cout<<"check 4"<<endl;
         updateG(G,Gamma,m,Nc,Nd,x,p,s,K,b,c,emme); //Updates the G and the Gamma
         //cout<<"check 5"<<endl;
-        myprint2(Nc,Nd,t,M,file); //Prints N average and x average at time t
+        //myprint2(Nc,Nd,t,M,file); //Prints N average and x average at time t
         //cout<<"check 6"<<endl;
         if(oldt>=interval){ //Checks whether I have to print or not
         	myprint2(Nc,Nd,t,M,file_fast); //Printing the results on file fast. To create a picture

@@ -38,17 +38,24 @@ double d(double Nc, double Nd, double K){
 	return y;
 }    
 
+double faverage(double x, double b, double c, double s){ //computes the <f> as in the paper in order to use normalized fitness!
+	double y;
+	
+	y=x*fcoop(x,b,c,s)+(1-x)*fdef(x,b,s);
+	return y;
+}
+
 void initializeGamma(double **G, double *Gamma,int M, double *Nc, double *Nd, double *x, double p, double s, double K,double b, double c){
     int i=0,j;
     
     j=0; //I have to create the first gamma by hand due to Gamma[0]
-    G[0][0]=Nc[i]*g(x[i],p)*fcoop(x[i],b,c,s);
+    G[0][0]=Nc[i]*g(x[i],p)*fcoop(x[i],b,c,s)/faverage(x[i],b,c,s);
     Gamma[0]=G[0][0];
     j++;
     G[0][1]=Nc[i]*d(Nc[i],Nd[i],K); 
     Gamma[j]=Gamma[j-1]+G[0][1];
     j++;
-    G[0][2]=g(x[i],p)*Nd[i]*fdef(x[i],b,s);
+    G[0][2]=g(x[i],p)*Nd[i]*fdef(x[i],b,s)/faverage(x[i],b,c,s);
     Gamma[j]=Gamma[j-1]+G[0][2];
     j++;
     G[0][3]=Nd[i]*d(Nc[i],Nd[i],K); 
@@ -56,13 +63,13 @@ void initializeGamma(double **G, double *Gamma,int M, double *Nc, double *Nd, do
     j++;
     //cout<<"The gammas are: "<<G[0][0]<<"  "<<G[0][1]<<"  "<<G[0][2]<<"  "<<G[0][3]<<"and gamma j is "<<Gamma[j-1]<<endl;
     for(i=1; i<M;i++){ //Create the Gammas; the order is G_(0->C), G_(c->0), G_(0->D), G_(D->0) and start back for the new cell
-       G[i][0]=Nc[i]*g(x[i],p)*fcoop(x[i],b,c,s);
+       G[i][0]=Nc[i]*g(x[i],p)*fcoop(x[i],b,c,s)/faverage(x[i],b,c,s);
        Gamma[j]=Gamma[j-1]+G[i][0];
        j++;
        G[i][1]=Nc[i]*d(Nc[i],Nd[i],K); 
        Gamma[j]=Gamma[j-1]+G[i][1];
        j++;
-       G[i][2]=g(x[i],p)*Nd[i]*fdef(x[i],b,s);
+       G[i][2]=g(x[i],p)*Nd[i]*fdef(x[i],b,s)/faverage(x[i],b,c,s);
        Gamma[j]=Gamma[j-1]+G[i][2];
        j++;
        G[i][3]=Nd[i]*d(Nc[i],Nd[i],K);
@@ -177,9 +184,9 @@ void updateG(double **G,double *Gamma, int m, double *Nc, double *Nd, double *x,
     for( i=0; i<4;i++){ //Save the changes of G[][]
         old[i]=G[m][i];
     }
-    G[m][0]=Nc[m]*g(x[m],p)*fcoop(x[m],b,c,s); //Updates the G[][]
+    G[m][0]=Nc[m]*g(x[m],p)*fcoop(x[m],b,c,s)/faverage(x[m],b,c,s); //Updates the G[][]
     G[m][1]=Nc[m]*d(Nc[m],Nd[m],K); 
-    G[m][2]=g(x[m],p)*Nd[m]*fdef(x[m],b,s);
+    G[m][2]=g(x[m],p)*Nd[m]*fdef(x[m],b,s)/faverage(x[m],b,c,s);
     G[m][3]=Nd[m]*d(Nc[m],Nd[m],K);
     sum=0;
     for(i=0;i<4;i++){ //Compute the change

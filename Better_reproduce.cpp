@@ -11,9 +11,9 @@ using namespace std;
 //**********Initializations**********
 const int N0=12; //Initial number of bacteria in each cell
 const int Nc0=6;//Initial number of cooperators in each cell
-const double T=45.; //Time when the simulation stops
+const double T=1.; //Time when the simulation stops
 const double interval=0.001; //Time step for which I print my results in fast
-const int M=5000; //Number of cells
+const int M=10000; //Number of cells
 const double b=3.; //Constant as in the paper
 const double c=1; //Constant as in the paper
 const double s=0.05; //Selection's strenght

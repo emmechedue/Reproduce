@@ -124,6 +124,19 @@ void myprint2(double *Nc,double *Nd,double t,int M, ofstream& file){ //Prints th
     return;
 }
 
+void myprintensamble(double *Nc,double *Nd,double t,int M, ofstream& file){ //Prints all the ensamble in the form t****N**x****N**x****N**x....endline
+	file<<t<<"    "; //Prints the time
+	for(i=0; i<M; i++){ //Prints Nc+Nd and x
+		y=Nc[i]+Nd[i];
+		file<<y<<"  ";
+		y=Nc[i]/y;
+		file<<y<<"    ";
+	}
+	file<<endl;
+	return ;
+}
+	
+	
 int search(double *Gamma, int M, double x){ //Binary search
     int a,b,l,result;
     bool check;

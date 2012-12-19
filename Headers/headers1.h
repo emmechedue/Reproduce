@@ -125,6 +125,9 @@ void myprint2(double *Nc,double *Nd,double t,int M, ofstream& file){ //Prints th
 }
 
 void myprintensamble(double *Nc,double *Nd,double t,int M, ofstream& file){ //Prints all the ensamble in the form t****N**x****N**x****N**x....endline
+	double y;
+	int i;
+
 	file<<t<<"    "; //Prints the time
 	for(i=0; i<M; i++){ //Prints Nc+Nd and x
 		y=Nc[i]+Nd[i];

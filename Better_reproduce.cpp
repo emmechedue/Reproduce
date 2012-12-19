@@ -9,12 +9,12 @@
 using namespace std;
 
 //**********Initializations**********
-const int N0=12; //Initial number of bacteria in each cell
-const int Nc0=6;//Initial number of cooperators in each cell
-const double T=1.; //Time when the simulation stops
+const int N0=4; //Initial number of bacteria in each cell
+const int Nc0=2;//Initial number of cooperators in each cell
+const double T=3.; //Time when the simulation stops
 const double interval=0.001; //Time step for which I print my results in fast
 const double intervalens=0.01; //Time step for which I print my results in ensamble.txt
-const int M=10000; //Number of cells
+const int M=100; //Number of cells
 const double b=3.; //Constant as in the paper
 const double c=1; //Constant as in the paper
 const double s=0.05; //Selection's strenght
@@ -82,7 +82,7 @@ int main(){
         //cout<<endl<<"rand= "<<rand<<endl;
         t=t+rand; //Update the time
         oldt=oldt+rand; //Update oldt
-        oldtensamble+=rand; //Update oldtensamble
+        oldtensamble=oldtensamble+rand; //Update oldtensamble
         //cout<<endl<<"oldt= "<<oldt<<endl;
         rand=gsl_rng_uniform(r)*Gamma[emme-1]; //Generates the random number to choose the reaction!
         //cout<<"check 1"<<endl;
@@ -102,7 +102,7 @@ int main(){
         }
         if(oldtensamble>=intervalens){ //Checks whether I have to print or not on ensamble.txt
         	myprintensamble(Nc,Nd,t,M,file); //Printing the results on file ensamble; to create the movie
-        	oldt=oldt -intervalens; //Subract by oldtensamble the value of intervalens to start counting again
+        	oldtensamble=oldtensamble -intervalens; //Subract by oldtensamble the value of intervalens to start counting again
         	//cout<<"The time is "<<t<<endl; //Just to check
         }
     }while(t<=T);

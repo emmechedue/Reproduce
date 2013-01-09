@@ -138,7 +138,22 @@ void myprintensamble(double *Nc,double *Nd,double t,int M, ofstream& file){ //Pr
 	file<<endl;
 	return ;
 }
-	
+
+void myprintensamble2(double *Nc,double *Nd,double t,int M, ofstream& fileN, ofstream& filex){ //Prints all x in a file in the form x[t,m] and N in another file in the form N[t,m]
+	double y;
+	int i;
+
+	//file<<t<<"    "; //Prints the time
+	for(i=0; i<M; i++){ //Prints Nc+Nd and x
+		y=Nc[i]+Nd[i];
+		fileN<<y<<"    ";
+		y=Nc[i]/y;
+		filex<<y<<"    ";
+	}
+	fileN<<endl;
+	filex<<endl;
+	return ;
+}	
 	
 int search(double *Gamma, int M, double x){ //Binary search
     int a,b,l,result;
@@ -149,12 +164,19 @@ int search(double *Gamma, int M, double x){ //Binary search
     do{
         l=(a+b)/2;
         if(x<=Gamma[l]){
-            if(x>=Gamma[l-1]){result=l;
-            check=true;}
+            if((x>=Gamma[l-1])&&(l>0)){
+            	result=l;
+		   		check=true;}
             else{
-                b=l;
-                check=false;}
+		         if(l>0){
+		            b=l;
+		            check=false;}
+		         else{
+		         	result=0;
+		         	check=true;
+		         }
             }
+        }
         else{
             if(x<=Gamma[l+1]){
                 result=l+1;

@@ -11,10 +11,10 @@ using namespace std;
 //**********Initializations**********
 const int N0=4; //Initial number of bacteria in each cell
 const int Nc0=2;//Initial number of cooperators in each cell
-const double T=3.; //Time when the simulation stops
+const double T=2.; //Time when the simulation stops
 const double interval=0.001; //Time step for which I print my results in fast
-const double intervalens=0.01; //Time step for which I print my results in ensamble.txt
-const int M=100; //Number of cells
+const double intervalens=0.001; //Time step for which I print my results in ensamble.txt
+const int M=10000; //Number of cells
 const double b=3.; //Constant as in the paper
 const double c=1; //Constant as in the paper
 const double s=0.05; //Selection's strenght
@@ -32,8 +32,9 @@ int main(){
     double Gamma[emme]; //The array with all the partial sums
     double **G; //Matrix with all the gammas for all the cells in form of G[cell][reaction]
     double rand;
-    ofstream file,file_fast;//Output file and a file where I'm not going to print everything
-    const char filename[]="ensamble.txt";
+    ofstream fileN,filex,file_fast;//Output file and a file where I'm not going to print everything
+    const char filenameN[]="ensambleN.txt";
+    const char filenamex[]="ensamblex.txt";
     const char fname[]="fast.txt";
     unsigned int seed; //Seed of the random number generator
 	gsl_rng *r; //Pointer to the type of rng
@@ -63,11 +64,15 @@ int main(){
 	gsl_rng_set(r,seed); // Starting the generator
 	//**********************************
     
-    file.open(filename,ios::out|ios::trunc); //Open the output's file and print the results for time=0
-    file<<"#Results for the simulation reproducing the old results with"<<endl;
-    file<<"# M="<<M<<"  T="<<T<<"  K="<<K<<"  s="<<s<<"  p="<<p<<"  N0="<<N0<<"  Nc0="<<Nc0<<"  seed="<<seed<<endl;
-    file<<"#In the form of t****N**x****N**x****N**x"<<endl;
-    myprintensamble(Nc,Nd,t,M,file);
+    fileN.open(filenameN,ios::out|ios::trunc); //Open the N's file 
+    fileN<<"#Results for the simulation reproducing the old results with"<<endl;
+    fileN<<"# M="<<M<<"  T="<<T<<"  K="<<K<<"  s="<<s<<"  p="<<p<<"  N0="<<N0<<"  Nc0="<<Nc0<<"  seed="<<seed<<endl;
+    fileN<<"#In the form of N[t][m]"<<endl;
+    filex.open(filenamex,ios::out|ios::trunc); //Open the x's file and print the results for time=0
+    filex<<"#Results for the simulation reproducing the old results with"<<endl;
+    filex<<"# M="<<M<<"  T="<<T<<"  K="<<K<<"  s="<<s<<"  p="<<p<<"  N0="<<N0<<"  Nc0="<<Nc0<<"  seed="<<seed<<endl;
+    filex<<"#In the form of x[t][m]"<<endl;
+    myprintensamble2(Nc,Nd,t,M,fileN,filex);
     file_fast.open(fname,ios::out|ios::trunc); //Open the output's fast_file and print the results for time=0
     file_fast<<"#Results for the simulation reproducing the old results with"<<endl;
     file_fast<<"# M="<<M<<"  T="<<T<<"  K="<<K<<"  s="<<s<<"  p="<<p<<"  N0="<<N0<<"  Nc0="<<Nc0<<"  seed="<<seed<<endl;
@@ -101,13 +106,14 @@ int main(){
         	cout<<"The time is "<<t<<endl; //Just to check
         }
         if(oldtensamble>=intervalens){ //Checks whether I have to print or not on ensamble.txt
-        	myprintensamble(Nc,Nd,t,M,file); //Printing the results on file ensamble; to create the movie
+        	myprintensamble2(Nc,Nd,t,M,fileN,filex); //Printing the results on file ensamble; to create the movie
         	oldtensamble=oldtensamble -intervalens; //Subract by oldtensamble the value of intervalens to start counting again
         	//cout<<"The time is "<<t<<endl; //Just to check
         }
     }while(t<=T);
     
-    file.close(); //Closing the files of output!
+    fileN.close(); //Closing the files of output!
+    filex.close();
     file_fast.close();
     
     return 0;

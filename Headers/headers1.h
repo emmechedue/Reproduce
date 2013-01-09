@@ -124,19 +124,20 @@ void myprint2(double *Nc,double *Nd,double t,int M, ofstream& file){ //Prints th
     return;
 }
 
-void myprintensamble(double *Nc,double *Nd,double t,int M, ofstream& file){ //Prints all the ensamble in the form t****N**x****N**x****N**x....endline
-	double y;
-	int i;
+void myprintensamble(double *Nc,double *Nd,double t,int M, ofstream&
+file){ //Prints all the ensamble in the form t****N**x****N**x****N**x....endline
+    double y;
+    int i;
 
-	file<<t<<"    "; //Prints the time
-	for(i=0; i<M; i++){ //Prints Nc+Nd and x
-		y=Nc[i]+Nd[i];
-		file<<y<<"  ";
-		y=Nc[i]/y;
-		file<<y<<"    ";
-	}
-	file<<endl;
-	return ;
+    file<<left<<setw(10)<<t; //Prints the time
+    for(i=0; i<M; i++){ //Prints Nc+Nd and x
+        y=Nc[i]+Nd[i];
+        file<<left<<setw(10)<<y;
+        y=Nc[i]/y;
+        file<<left<<setw(10)<<y;
+    }
+    file<<endl;
+    return ;
 }
 
 void myprintensamble2(double *Nc,double *Nd,double t,int M, ofstream& fileN, ofstream& filex){ //Prints all x in a file in the form x[t,m] and N in another file in the form N[t,m]

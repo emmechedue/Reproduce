@@ -4,6 +4,7 @@
 #include<math.h>
 #include<iostream>
 #include<gsl/gsl_rng.h>
+#include<iomanip>
 #include<headers1.h>
 
 using namespace std;
